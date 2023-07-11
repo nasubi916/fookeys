@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onBeforeUnmount, onMounted, onUnmounted } from "vue";
 import { RouterView } from "vue-router";
 import { deletePlayer } from "@/server/usePlayerID";
-import { tryOnBeforeUnmount } from '@vueuse/core'
+import { tryOnMounted, tryOnUnmounted, tryOnBeforeUnmount } from "@vueuse/core";
 
 
 onMounted(async () => {
@@ -10,8 +10,9 @@ onMounted(async () => {
 });
 
 //アプリが閉じられたらユーザーIDを削除する
-tryOnBeforeUnmount(() => {
-  deletePlayer();
+tryOnBeforeUnmount(async () => {
+  await deletePlayer();
+  console.log("アンマウントされました");
 });
 </script>
 

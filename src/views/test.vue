@@ -2,12 +2,18 @@
 import { ref, toRefs } from "vue";
 import { playerStore } from "@/main";
 import { storeToRefs } from "pinia";
+import { onClickOutside } from '@vueuse/core'
+import { vOnClickOutside } from '@vueuse/components'
 
 //storeの参照
 const { id, player } = storeToRefs(playerStore);
 const { name, hand } = toRefs(player.value);
 
 
+const modal = ref(false)
+function closeModal() {
+  modal.value = false
+}
 </script>
 
 <template>
@@ -17,8 +23,14 @@ const { name, hand } = toRefs(player.value);
       <p class="text-sm font-medium text-gray-900 truncate">id:{{ id }}</p>
       <p class="text-sm font-medium text-gray-900 truncate">name:{{ name }}</p>
     </div>
-    <div v-for="card in hand" :key="card.id" class="max-w-3xl">
-      <p>{{ card.id }}</p>
+
+
+    <button @click="modal = true">
+      Open Modal
+    </button>
+    <div v-if="modal" v-on-click-outside="closeModal">
+      Hello World
     </div>
+    <vOnClickOutside v-if="false" />
   </div>
 </template>
